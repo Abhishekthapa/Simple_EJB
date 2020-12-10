@@ -63,7 +63,7 @@ public class PostMessage extends HttpServlet {
                 messageProducer.send(message);
                 messageProducer.close();
                 connection.close();
-                response.sendRedirect("ListNews");
+                response.sendRedirect("directdb");
 
             } catch (JMSException ex) {
                 ex.printStackTrace();

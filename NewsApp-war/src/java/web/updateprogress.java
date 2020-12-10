@@ -59,7 +59,7 @@ public class updateprogress extends HttpServlet {
                 sql = "Update APP.NEWSENTITY set title='" +title+ "', body='"+body+"' where id=" +idn;
                 statement.executeUpdate(sql);
                 conn.close();
-                response.sendRedirect("directdb");
+                response.sendRedirect("/NewsApp-war");
                 
             }
          }catch (SQLException ex) {

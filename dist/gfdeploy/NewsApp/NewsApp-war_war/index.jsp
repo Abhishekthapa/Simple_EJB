@@ -15,7 +15,7 @@
         <script>
         $(document).ready(function(){
              
-                 $.get("ListNews",function(data){
+                 $.get("directdb",function(data){
                   $("#javaquery").html(data);
                  
              });
