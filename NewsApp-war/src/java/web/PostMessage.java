@@ -63,36 +63,22 @@ public class PostMessage extends HttpServlet {
                 messageProducer.send(message);
                 messageProducer.close();
                 connection.close();
-                response.sendRedirect("directdb");
+                
+              PrintWriter out = response.getWriter();
+              out.println(e.getId());
+              
+              out.close();
+                response.setStatus(200);
 
             } catch (JMSException ex) {
+                
+                response.setStatus(404);
                 ex.printStackTrace();
             }
         }
 
 
-        PrintWriter out = response.getWriter();
-        try {
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PostMessage</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet PostMessage at " + request.getContextPath() + "</h1>");
-
-            // The following code adds the form to the web page
-            out.println("<form>");
-            out.println("Title: <input type='text' name='title'><br/>");
-            out.println("Message: <textarea name='body'></textarea><br/>");
-            out.println("<input type='submit'><br/>");
-            out.println("</form>");
-
-
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
-        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

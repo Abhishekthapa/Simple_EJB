@@ -59,10 +59,10 @@ public class delete extends HttpServlet {
                 
                 statement.executeUpdate(sql);
                 conn.close();
-                response.sendRedirect("/NewsApp-war");
+                response.setStatus(200);
             }else
             {
-                out.println("connection refused");
+                response.setStatus(404);
             }
          }catch (SQLException ex) {
             ex.printStackTrace();

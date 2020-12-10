@@ -43,15 +43,21 @@ public class updateprogress extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         String sid=request.getParameter("id");  
+        System.out.println(sid);
         int idn=Integer.parseInt(sid);
+        
         String title=request.getParameter("title");
+        System.out.println(title);
         String body=request.getParameter("body");
+        
         try {
             //register the driver
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             // connection to db 
             String dbURL1 = "jdbc:derby://localhost:1527/sample;create=true";
             Connection conn = DriverManager.getConnection(dbURL1);
+            
+            System.out.println(title);
             if (conn != null) {
                 
                 Statement statement = conn.createStatement();
@@ -59,7 +65,7 @@ public class updateprogress extends HttpServlet {
                 sql = "Update APP.NEWSENTITY set title='" +title+ "', body='"+body+"' where id=" +idn;
                 statement.executeUpdate(sql);
                 conn.close();
-                response.sendRedirect("/NewsApp-war");
+                response.setStatus(200);
                 
             }
          }catch (SQLException ex) {

@@ -71,7 +71,7 @@ public class NewsEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "ejb.NewsEntity[id=" + id + "]";
+        return "{id: "+this.id +",title: "+this.title+",body: "+ this.body+"},";
     }
 
 

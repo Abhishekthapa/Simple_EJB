@@ -129,6 +129,37 @@ function delete_button_action(){
     
 }
 
+function addItem(){
+    var title=document.getElementById("new_title").value;
+    var body =document.getElementById("new_body").value;
+    
+    var data_to_send = "title="+title+"&body="+body;
+    
+     fetch("/NewsApp-war/PostMessage",{
+        method : "POST",
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body :  data_to_send
+    }).then(response =>response.text()).then(d => {
+         var top_div = document.getElementById("top");
+            
+            var title=document.getElementById("new_title").value;
+            var body =document.getElementById("new_body").value;
+            var id = d;
+            console.log(id);
+            
+            var values ={
+                id : id,
+                title: title,
+                body : body
+            }
+            top_div.appendChild(todo_element(values));
+            console.log("Success Adding Item");
+    })
+    
+    
+    
+    
+}
 
              </script>
 
@@ -137,6 +168,9 @@ function delete_button_action(){
     </head>
     <body>
         <h1>Todo List</h1>    
+            <input type="text" id="new_title" placeholder="TODO title">
+            <input type="textbox" id="new_body" placeholder="Description">
+            <button type="Submit" onclick="addItem()">Submit</button>
         <br />
         <div id="top">
             

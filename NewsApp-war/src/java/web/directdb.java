@@ -6,6 +6,8 @@
 
 package web;
 
+import com.google.gson.Gson;
+import ejb.NewsEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -13,6 +15,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -20,6 +24,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 /**
  *
@@ -38,9 +43,10 @@ public class directdb extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException, SQLException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json");
         String sid=request.getParameter("id");  
         PrintWriter out = response.getWriter();
+        ArrayList<NewsEntity> items = new ArrayList<NewsEntity>();
         try {
             //register the driver
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -55,20 +61,25 @@ public class directdb extends HttpServlet {
                 
                 ResultSet result= statement.executeQuery(sql);
                 while(result.next()){
-                out.println("<div class='container' style='padding: 10px'>");
-                out.println("<b>" +result.getString("title")+ "</b><br />");
-                out.println(result.getString("body")+"<br /> "); 
-                out.println("<a href='update?id=" +result.getString("id")+ "'>Update</a>  ");
-                out.println("<a href='delete?id=" +result.getString("id")+ "'>Delete</a>");
-                out.println("</div>");
+                        NewsEntity newData = new NewsEntity();
+                        newData.setId(result.getLong("id"));
+                        newData.setTitle(result.getString("title"));
+                        newData.setBody(result.getString("body"));
+                        items.add(newData);
                 }
-                out.println("<a href='PostMessage'>Add new message</a>");
+             
+                Gson  gson = new Gson();
+                String json = gson.toJson(items);
+                out.println(json);
+              //  out.println("<a href='PostMessage'>Add new message</a>");
                 conn.close();
             }
         }catch (SQLException ex) {
             ex.printStackTrace();
     }
     }
+    
+   
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
