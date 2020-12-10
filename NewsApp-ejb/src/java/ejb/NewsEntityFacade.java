@@ -27,7 +27,7 @@ public class NewsEntityFacade {
     }
 
     public void edit(NewsEntity newsEntity) {
-        em.merge(newsEntity);
+        em.merge(newsEntity); 
     }
 
     public void remove(NewsEntity newsEntity) {
@@ -39,6 +39,7 @@ public class NewsEntityFacade {
     }
 
     public List<NewsEntity> findAll() {
+        
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(NewsEntity.class));
         return em.createQuery(cq).getResultList();

@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -25,9 +25,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author aceva
  */
-@WebServlet(name = "updateprogress", urlPatterns = {"/updateprogress"})
-public class updateprogress extends HttpServlet {
-
+@WebServlet(name = "directdb", urlPatterns = {"/directdb"})
+public class directdb extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,16 +35,12 @@ public class updateprogress extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * @throws java.lang.ClassNotFoundException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException {
+            throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
         String sid=request.getParameter("id");  
-        int idn=Integer.parseInt(sid);
-        String title=request.getParameter("title");
-        String body=request.getParameter("body");
+        PrintWriter out = response.getWriter();
         try {
             //register the driver
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -53,17 +48,26 @@ public class updateprogress extends HttpServlet {
             String dbURL1 = "jdbc:derby://localhost:1527/sample;create=true";
             Connection conn = DriverManager.getConnection(dbURL1);
             if (conn != null) {
-                
+                //out.println("Connected to database ");
                 Statement statement = conn.createStatement();
                 String sql;
-                sql = "Update APP.NEWSENTITY set title='" +title+ "', body='"+body+"' where id=" +idn;
-                statement.executeUpdate(sql);
-                conn.close();
-                response.sendRedirect("directdb");
+                sql = "SELECT * FROM APP.NEWSENTITY"  ;
                 
+                ResultSet result= statement.executeQuery(sql);
+                while(result.next()){
+                out.println("<div class='container' style='padding: 10px'>");
+                out.println("<b>" +result.getString("title")+ "</b><br />");
+                out.println(result.getString("body")+"<br /> "); 
+                out.println("<a href='update?id=" +result.getString("id")+ "'>Update</a>  ");
+                out.println("<a href='delete?id=" +result.getString("id")+ "'>Delete</a>");
+                out.println("</div>");
+                }
+                out.println("<a href='PostMessage'>Add new message</a>");
+                conn.close();
             }
-         }catch (SQLException ex) {
-        }
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+    }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -81,7 +85,9 @@ public class updateprogress extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(updateprogress.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(directdb.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(directdb.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -99,7 +105,9 @@ public class updateprogress extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(updateprogress.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(directdb.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(directdb.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

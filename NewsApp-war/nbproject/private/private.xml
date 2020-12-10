@@ -4,7 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/aceva/Downloads/NewsAppEE6/NewsApp-war/web/index.jsp</file>
-            <file>file:/C:/Users/aceva/Downloads/NewsAppEE6/NewsApp-war/web/ajax2.jsp</file>
+            <file>file:/C:/Users/aceva/Downloads/NewsAppEE6/NewsApp-war/src/java/web/ListNews.java</file>
+            <file>file:/C:/Users/aceva/Downloads/NewsAppEE6/NewsApp-war/src/java/web/PostMessage.java</file>
+            <file>file:/C:/Users/aceva/Downloads/NewsAppEE6/NewsApp-war/src/java/web/updateprogress.java</file>
+            <file>file:/C:/Users/aceva/Downloads/NewsAppEE6/NewsApp-war/src/java/web/directdb.java</file>
+            <file>file:/C:/Users/aceva/Downloads/NewsAppEE6/NewsApp-war/src/java/web/delete.java</file>
+            <file>file:/C:/Users/aceva/Downloads/NewsAppEE6/NewsApp-war/src/java/web/update.java</file>
         </group>
     </open-files>
 </project-private>

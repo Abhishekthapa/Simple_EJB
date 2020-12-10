@@ -48,7 +48,7 @@ public class ListNews extends HttpServlet {
             out.println("<title>Servlet ListNews</title>");  
             out.println("</head>");
             out.println("<body>");
-
+           
             List news = newsEntityFacade.findAll();
             for (Iterator it = news.iterator(); it.hasNext();) {
                 NewsEntity elem = (NewsEntity) it.next();
