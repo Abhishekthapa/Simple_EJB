@@ -44,7 +44,7 @@ public class updateprogress extends HttpServlet {
         PrintWriter out = response.getWriter();
         String sid=request.getParameter("id");  
         System.out.println(sid);
-        int idn=Integer.parseInt(sid);
+        //int idn=Integer.parseInt(sid);
         
         String title=request.getParameter("title");
         System.out.println(title);
@@ -62,7 +62,7 @@ public class updateprogress extends HttpServlet {
                 
                 Statement statement = conn.createStatement();
                 String sql;
-                sql = "Update APP.NEWSENTITY set title='" +title+ "', body='"+body+"' where id=" +idn;
+                sql = "Update APP.NEWSENTITY set title='" +title+ "', body='"+body+"' where uuid='" +sid+"'";
                 statement.executeUpdate(sql);
                 conn.close();
                 response.setStatus(200);

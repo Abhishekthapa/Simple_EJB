@@ -43,7 +43,8 @@ public class delete extends HttpServlet {
             throws ServletException, IOException, SQLException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
         String sid=request.getParameter("id");  
-        int idn=Integer.parseInt(sid);
+        
+        //int idn=Integer.parseInt(sid);
         PrintWriter out = response.getWriter();
         try {
             //register the driver
@@ -55,8 +56,9 @@ public class delete extends HttpServlet {
                 //out.println("Connected to database ");
                 Statement statement = conn.createStatement();
                 String sql;
-                sql = "DELETE FROM APP.NEWSENTITY where ID=" + idn  ;
                 
+                sql = "DELETE FROM APP.NEWSENTITY where UUID='"+sid+"'"  ;
+                System.out.println(sql);
                 statement.executeUpdate(sql);
                 conn.close();
                 response.setStatus(200);

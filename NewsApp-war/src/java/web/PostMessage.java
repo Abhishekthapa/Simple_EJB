@@ -7,6 +7,7 @@ package web;
 import ejb.NewsEntity;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.UUID;
 import javax.annotation.Resource;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -58,14 +59,17 @@ public class PostMessage extends HttpServlet {
                 NewsEntity e = new NewsEntity();
                 e.setTitle(title);
                 e.setBody(body);
-
+                
+                String uuid = UUID.randomUUID().toString();
+                e.setUuid(uuid);
+                
                 message.setObject(e);
                 messageProducer.send(message);
                 messageProducer.close();
                 connection.close();
                 
               PrintWriter out = response.getWriter();
-              out.println(e.getId());
+              out.println(e.getUuid());
               
               out.close();
                 response.setStatus(200);

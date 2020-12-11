@@ -39,7 +39,7 @@ for(json_elem in json_data){
 
 function todo_element(data){
     
-    var id = data.id;
+    var id = data.uuid;
     var title = data.title;
     var body = data.body;
     

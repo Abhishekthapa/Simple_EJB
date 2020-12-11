@@ -62,7 +62,7 @@ public class directdb extends HttpServlet {
                 ResultSet result= statement.executeQuery(sql);
                 while(result.next()){
                         NewsEntity newData = new NewsEntity();
-                        newData.setId(result.getLong("id"));
+                        newData.setUuid(result.getString("uuid"));
                         newData.setTitle(result.getString("title"));
                         newData.setBody(result.getString("body"));
                         items.add(newData);
