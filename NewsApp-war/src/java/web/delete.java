@@ -6,6 +6,7 @@
 
 package web;
 
+import ejb.controller.DatabaseHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -20,7 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import java.sql.PreparedStatement;
 /**
  *
  * @author aceva
@@ -46,29 +47,8 @@ public class delete extends HttpServlet {
         
         //int idn=Integer.parseInt(sid);
         PrintWriter out = response.getWriter();
-        try {
-            //register the driver
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            // connection to db 
-            String dbURL1 = "jdbc:derby://localhost:1527/sample;create=true";
-            Connection conn = DriverManager.getConnection(dbURL1);
-            if (conn != null) {
-                //out.println("Connected to database ");
-                Statement statement = conn.createStatement();
-                String sql;
-                
-                sql = "DELETE FROM APP.NEWSENTITY where UUID='"+sid+"'"  ;
-                System.out.println(sql);
-                statement.executeUpdate(sql);
-                conn.close();
-                response.setStatus(200);
-            }else
-            {
-                response.setStatus(404);
-            }
-         }catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        DatabaseHelper dbHelper = new DatabaseHelper();
+        response.setStatus(dbHelper.delete_item(sid));
         
     }
 

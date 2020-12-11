@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author aceva
  */
-@WebServlet(name = "update", urlPatterns = {"/update"})
+@WebServlet(name = "update", urlPatterns = {"/update_old"})
 public class update extends HttpServlet {
 
     /**

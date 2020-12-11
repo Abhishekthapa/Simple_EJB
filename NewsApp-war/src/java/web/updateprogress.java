@@ -6,6 +6,7 @@
 
 package web;
 
+import ejb.controller.DatabaseHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -25,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author aceva
  */
-@WebServlet(name = "updateprogress", urlPatterns = {"/updateprogress"})
+@WebServlet(name = "updateprogress", urlPatterns = {"/update"})
 public class updateprogress extends HttpServlet {
 
     /**
@@ -37,11 +38,11 @@ public class updateprogress extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException {
+            throws ServletException, IOException, ClassNotFoundException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
         String sid=request.getParameter("id");  
         System.out.println(sid);
         //int idn=Integer.parseInt(sid);
@@ -50,26 +51,8 @@ public class updateprogress extends HttpServlet {
         System.out.println(title);
         String body=request.getParameter("body");
         
-        try {
-            //register the driver
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            // connection to db 
-            String dbURL1 = "jdbc:derby://localhost:1527/sample;create=true";
-            Connection conn = DriverManager.getConnection(dbURL1);
-            
-            System.out.println(title);
-            if (conn != null) {
-                
-                Statement statement = conn.createStatement();
-                String sql;
-                sql = "Update APP.NEWSENTITY set title='" +title+ "', body='"+body+"' where uuid='" +sid+"'";
-                statement.executeUpdate(sql);
-                conn.close();
-                response.setStatus(200);
-                
-            }
-         }catch (SQLException ex) {
-        }
+        DatabaseHelper dbHelper = new DatabaseHelper();
+        dbHelper.update_item(sid, title, body);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -88,6 +71,8 @@ public class updateprogress extends HttpServlet {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(updateprogress.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(updateprogress.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -105,6 +90,8 @@ public class updateprogress extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (ClassNotFoundException ex) {
+            Logger.getLogger(updateprogress.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
             Logger.getLogger(updateprogress.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

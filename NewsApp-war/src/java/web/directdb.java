@@ -8,6 +8,7 @@ package web;
 
 import com.google.gson.Gson;
 import ejb.NewsEntity;
+import ejb.controller.DatabaseHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -46,37 +47,10 @@ public class directdb extends HttpServlet {
         response.setContentType("application/json");
         String sid=request.getParameter("id");  
         PrintWriter out = response.getWriter();
-        ArrayList<NewsEntity> items = new ArrayList<NewsEntity>();
-        try {
-            //register the driver
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            // connection to db 
-            String dbURL1 = "jdbc:derby://localhost:1527/sample;create=true";
-            Connection conn = DriverManager.getConnection(dbURL1);
-            if (conn != null) {
-                //out.println("Connected to database ");
-                Statement statement = conn.createStatement();
-                String sql;
-                sql = "SELECT * FROM APP.NEWSENTITY"  ;
-                
-                ResultSet result= statement.executeQuery(sql);
-                while(result.next()){
-                        NewsEntity newData = new NewsEntity();
-                        newData.setUuid(result.getString("uuid"));
-                        newData.setTitle(result.getString("title"));
-                        newData.setBody(result.getString("body"));
-                        items.add(newData);
-                }
-             
-                Gson  gson = new Gson();
-                String json = gson.toJson(items);
-                out.println(json);
-              //  out.println("<a href='PostMessage'>Add new message</a>");
-                conn.close();
-            }
-        }catch (SQLException ex) {
-            ex.printStackTrace();
-    }
+        
+        DatabaseHelper dbHelper = new DatabaseHelper();
+        out.println(dbHelper.all_data_dump());
+        
     }
     
    

@@ -90,7 +90,7 @@ function update_button_action(){
     //post request data
     var data_to_send = "id="+id+"&title="+title+"&body="+body;
     
-    fetch("/NewsApp-war/updateprogress",{
+    fetch("/NewsApp-war/update",{
         method : "POST",
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
         body :  data_to_send
